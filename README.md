@@ -7,7 +7,7 @@ React Frontend for Movie App
 
 In the project directory, to install dependencies run `yarn install`.
 
-You will need to setup the environment variable for the GraphQL endpoint. To do this copy the `.env.example` to `.env`. And create a variable called **REACT_APP_GRAPHQL_ENDPOINT** and set the value as the GraphQL. 
+You will need to setup the environment variable for the GraphQL endpoint. To do this copy the `.env.example` to `.env`. And set the value of **REACT_APP_GRAPHQL_ENDPOINT** to the endpoint. 
 
 Start the backend service and then start this application by running `yarn start` in the project directory. 
 
