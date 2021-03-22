@@ -1,0 +1,12 @@
+node_modules
+dist
+tests
+cypress
+coverage
+styleguide.config.js
+
+src/**/*.spec.ts
+src/**/*.test.tsx
+src/**/*.md
+src/reportWebVitals.ts
+src/setupTests.ts
