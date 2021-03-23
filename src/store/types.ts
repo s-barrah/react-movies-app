@@ -3,7 +3,8 @@ export const UPDATE_LOADING_STATE = "UPDATE_LOADING_STATE";
 export const UPDATE_SUBMIT_STATE = "UPDATE_SUBMIT_STATE";
 export const UPDATE_VALIDATION_STATE = "UPDATE_VALIDATION_STATE";
 export const RESET_VALIDATION_STATE = "RESET_VALIDATION_STATE";
-export const GET_DATA = "GET_DATA";
+export const FETCH_MOVIES = "FETCH_MOVIES";
+export const FETCH_SUGGESTIONS = "FETCH_SUGGESTIONS";
 
 import { IMovie } from "../interfaces/movie.interface";
 import { IActor } from "../interfaces/actor.interface";
@@ -20,7 +21,7 @@ export interface ISearchMovieState {
 
 export interface IInputAction {
   type: typeof HANDLE_INPUT_CHANGE;
-  names: string;
+  value: string;
 }
 
 export interface IValidateAction {
@@ -42,9 +43,14 @@ export interface ISubmitAction {
   submitted: boolean;
 }
 
-export interface IGetAction {
-  type: typeof GET_DATA;
+export interface IFetchMoviesAction {
+  type: typeof FETCH_MOVIES;
   payload: IMovie[];
+}
+
+export interface IFetchSuggestionsAction {
+  type: typeof FETCH_SUGGESTIONS;
+  payload: IActor[];
 }
 
 export type ActionTypes =
@@ -53,4 +59,5 @@ export type ActionTypes =
   | IResetValidateAction
   | ILoadingAction
   | ISubmitAction
-  | IGetAction;
+  | IFetchMoviesAction
+  | IFetchSuggestionsAction;

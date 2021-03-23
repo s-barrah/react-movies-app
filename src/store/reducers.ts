@@ -4,7 +4,8 @@ import {
   UPDATE_SUBMIT_STATE,
   UPDATE_VALIDATION_STATE,
   RESET_VALIDATION_STATE,
-  GET_DATA,
+  FETCH_MOVIES,
+  FETCH_SUGGESTIONS,
   ISearchMovieState,
   ActionTypes,
 } from "./types";
@@ -17,7 +18,7 @@ export default function movieReducer(
     case HANDLE_INPUT_CHANGE:
       return {
         ...state,
-        names: action.names,
+        names: action.value,
       };
     case UPDATE_LOADING_STATE:
       return {
@@ -42,10 +43,15 @@ export default function movieReducer(
         isValid: false,
         hasError: false,
       };
-    case GET_DATA:
+    case FETCH_MOVIES:
       return {
         ...state,
         data: action.payload,
+      };
+    case FETCH_SUGGESTIONS:
+      return {
+        ...state,
+        suggestions: action.payload,
       };
     default:
       return state;

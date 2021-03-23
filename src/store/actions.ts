@@ -8,7 +8,8 @@ import { isValidSearch } from "../utils/util";
 import {
   HANDLE_INPUT_CHANGE,
   UPDATE_LOADING_STATE,
-  GET_DATA,
+  FETCH_MOVIES,
+  FETCH_SUGGESTIONS,
   UPDATE_VALIDATION_STATE,
   RESET_VALIDATION_STATE,
   UPDATE_SUBMIT_STATE,
@@ -17,8 +18,9 @@ import {
 
 // Interfaces
 import { IMovie } from "../interfaces/movie.interface";
+import { IActor } from "../interfaces/actor.interface";
 
-const findMovies = (names = "") => `{
+const findMoviesQuery = (names = "") => `query {
   findMoviesByActors(names: "${names}") {
     movies {
      title
@@ -27,6 +29,17 @@ const findMovies = (names = "") => `{
     }
   }
 }`;
+
+const findSuggestionsQuery = (name = "") => `query {
+  getSuggestedActors(name: "${name}") {
+    actors {
+     id
+     name
+    }
+  }
+}`;
+
+const GRAPHQL_ENDPOINT = process.env.REACT_APP_GRAPHQL_ENDPOINT;
 
 export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
   function updateLoadingState(state: boolean) {
@@ -50,17 +63,19 @@ export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
     const isInputValid = isValidSearch(names);
     // TODO handle special character validation
     if (isInputValid) {
-      await sendRequest(names);
+      await fetchMovies(names);
     } else {
       updateValidationState(false);
     }
   }
 
-  async function sendRequest(names: string) {
-    const GRAPHQL_ENDPOINT = process.env.REACT_APP_GRAPHQL_ENDPOINT;
+  async function fetchMovies(names: string) {
     updateLoadingState(true);
     try {
-      const response = await fetchGraphQL(findMovies(names), GRAPHQL_ENDPOINT);
+      const response = await fetchGraphQL(
+        findMoviesQuery(names),
+        GRAPHQL_ENDPOINT
+      );
       updateLoadingState(false);
       const {
         status,
@@ -68,7 +83,7 @@ export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
         data: { movies },
       } = response?.data;
       if (status === "Success" && message === "Success") {
-        handleGetData(movies);
+        getMovies(movies);
         resetValidationState();
       }
     } catch (error) {
@@ -76,16 +91,40 @@ export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
     }
   }
 
-  function handleInputChange(names: string) {
-    if (names) {
-      dispatch({ type: HANDLE_INPUT_CHANGE, names });
+  function handleInputChange(value: string) {
+    if (value) {
+      dispatch({ type: HANDLE_INPUT_CHANGE, value });
+      fetchSuggestions(value).then();
     } else {
       resetValidationState();
     }
   }
 
-  function handleGetData(data: IMovie[]) {
-    dispatch({ type: GET_DATA, payload: data });
+  function getMovies(data: IMovie[]) {
+    dispatch({ type: FETCH_MOVIES, payload: data });
+  }
+
+  async function fetchSuggestions(name: string) {
+    try {
+      const response = await fetchGraphQL(
+        findSuggestionsQuery(name),
+        GRAPHQL_ENDPOINT
+      );
+      const {
+        status,
+        message,
+        data: { actors },
+      } = response?.data;
+      if (status === "Success" && message === "Success") {
+        getSuggestions(actors);
+      }
+    } catch (error) {
+      console.log("fetchSuggestions --- error: ", error);
+    }
+  }
+
+  function getSuggestions(data: IActor[]) {
+    dispatch({ type: FETCH_SUGGESTIONS, payload: data });
   }
 
   return {
