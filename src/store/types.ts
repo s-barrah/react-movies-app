@@ -1,4 +1,5 @@
 export const HANDLE_INPUT_CHANGE = "HANDLE_INPUT_CHANGE";
+export const ADD_INPUT_ITEM = "ADD_INPUT_ITEM";
 export const UPDATE_LOADING_STATE = "UPDATE_LOADING_STATE";
 export const UPDATE_SUBMIT_STATE = "UPDATE_SUBMIT_STATE";
 export const UPDATE_VALIDATION_STATE = "UPDATE_VALIDATION_STATE";
@@ -10,7 +11,8 @@ import { IMovie } from "../interfaces/movie.interface";
 import { IActor } from "../interfaces/actor.interface";
 
 export interface ISearchMovieState {
-  names: string;
+  items: string[];
+  inputValue: string;
   hasError: boolean;
   isValid: boolean;
   isLoading: boolean;
@@ -22,6 +24,11 @@ export interface ISearchMovieState {
 export interface IInputAction {
   type: typeof HANDLE_INPUT_CHANGE;
   value: string;
+}
+
+export interface IInputAddItemAction {
+  type: typeof ADD_INPUT_ITEM;
+  payload: string[];
 }
 
 export interface IValidateAction {
@@ -55,6 +62,7 @@ export interface IFetchSuggestionsAction {
 
 export type ActionTypes =
   | IInputAction
+  | IInputAddItemAction
   | IValidateAction
   | IResetValidateAction
   | ILoadingAction

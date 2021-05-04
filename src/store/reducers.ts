@@ -1,5 +1,6 @@
 import {
   HANDLE_INPUT_CHANGE,
+  ADD_INPUT_ITEM,
   UPDATE_LOADING_STATE,
   UPDATE_SUBMIT_STATE,
   UPDATE_VALIDATION_STATE,
@@ -18,7 +19,12 @@ export default function movieReducer(
     case HANDLE_INPUT_CHANGE:
       return {
         ...state,
-        names: action.value,
+        inputValue: action.value,
+      };
+    case ADD_INPUT_ITEM:
+      return {
+        ...state,
+        items: action.payload,
       };
     case UPDATE_LOADING_STATE:
       return {

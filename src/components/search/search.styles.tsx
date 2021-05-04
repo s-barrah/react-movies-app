@@ -9,6 +9,12 @@ export const Instructions = styled.div`
   margin-bottom: 8px;
 `;
 
+export const ItemsContainer = styled.div`
+ display: flex
+ flex-flow: row wrap;
+ margin-bottom: 8px;
+`;
+
 export const FormWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;

@@ -16,7 +16,8 @@ import movieReducer from "../../store/reducers";
 function Main() {
   // Initial state
   const [mainState, dispatch] = React.useReducer(movieReducer, {
-    names: "",
+    items: [],
+    inputValue: "",
     hasError: false,
     isValid: false,
     isLoading: false,
@@ -26,14 +27,42 @@ function Main() {
   });
 
   // Get States
-  const { names, hasError, isValid, isLoading, data, submitted } = mainState;
+  const {
+    items,
+    inputValue,
+    hasError,
+    isValid,
+    isLoading,
+    data,
+    submitted,
+  } = mainState;
 
   // Get Actions
-  const { handleFormSubmit, handleInputChange } = movieActions(dispatch);
+  const {
+    handleFormSubmit,
+    handleInputChange,
+    handleAddItem,
+    resetValidationState,
+  } = movieActions(dispatch);
 
   async function handleSubmit() {
-    handleFormSubmit(names).then();
+    handleFormSubmit(inputValue).then();
   }
+
+  const handleAddInputItem = () => {
+    if (!items.includes(inputValue)) {
+      items.concat(inputValue);
+      handleAddItem(items.concat(inputValue));
+      resetValidationState();
+    }
+  };
+
+  const handleRemoveInputItem = (value: string) => {
+    if (value) {
+      const newValues = items.filter((item) => item !== value);
+      handleAddItem(newValues);
+    }
+  };
 
   return (
     <Container className="main-container">
@@ -44,10 +73,13 @@ function Main() {
         </Heading>
       </TopBar>
       <Search
+        items={items}
         isValid={isValid}
         hasError={hasError}
         handleChange={handleInputChange}
         handleSubmit={handleSubmit}
+        handleAddInputItem={handleAddInputItem}
+        handleRemoveInputItem={handleRemoveInputItem}
       />
 
       {isLoading ? (
