@@ -7,6 +7,7 @@ import { isValidSearch } from "../utils/util";
 // Types
 import {
   HANDLE_INPUT_CHANGE,
+  ADD_INPUT_ITEM,
   UPDATE_LOADING_STATE,
   FETCH_MOVIES,
   FETCH_SUGGESTIONS,
@@ -100,6 +101,10 @@ export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
     }
   }
 
+  function handleAddItem(value: string[]) {
+    dispatch({ type: ADD_INPUT_ITEM, payload: value });
+  }
+
   function getMovies(data: IMovie[]) {
     dispatch({ type: FETCH_MOVIES, payload: data });
   }
@@ -130,5 +135,7 @@ export default function movieActions(dispatch: React.Dispatch<ActionTypes>) {
   return {
     handleFormSubmit,
     handleInputChange,
+    handleAddItem,
+    resetValidationState,
   };
 }
